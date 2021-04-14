@@ -19,7 +19,9 @@ function getTime() {
   if (mm < 10) {
     mm = "0" + mm;
   }
-  return (dd + "/" + mm + "/" + yyyy + " @ " + hours + ":" + minutes + " " + ampm);
+  return (
+    dd + "/" + mm + "/" + yyyy + " @ " + hours + ":" + minutes + " " + ampm
+  );
 }
 
 function getTasks() {
@@ -37,7 +39,7 @@ function addTasks() {
     id = tasks[length - 1].id;
     id = id + 1;
   }
-  
+
   var time = getTime();
 
   tasks.push({
@@ -48,9 +50,8 @@ function addTasks() {
   });
 
   localStorage.setItem("tasks", JSON.stringify(tasks));
-  getTasks();
   document.getElementById("task").value = "";
-  location.reload();
+  displayTasks();
 }
 
 function handleEditTask(obj) {
@@ -67,7 +68,7 @@ function handleDoneTask(obj) {
   obj.completed = true;
   localStorage.clear();
   localStorage.setItem("tasks", JSON.stringify(tasks));
-  location.reload();
+  displayTasks();
 }
 
 function handleDeleteTask(object) {
@@ -81,13 +82,17 @@ function handleDeleteTask(object) {
   tasks.splice(index, 1);
   localStorage.clear();
   localStorage.setItem("tasks", JSON.stringify(tasks));
-  location.reload();
+  displayTasks();
 }
 
 function displayTasks() {
+  if (document.getElementById("list-item-container")) {
+    document.body.removeChild(document.getElementById("list-item-container"));
+  }
   tasks = getTasks();
   let listItemContainer = document.createElement("div");
   listItemContainer.classList.add("list-item-container");
+  listItemContainer.setAttribute("id", "list-item-container");
 
   tasks.map((obj) => {
     let todoListItem = document.createElement("div");
